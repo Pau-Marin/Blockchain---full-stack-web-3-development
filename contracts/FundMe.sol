@@ -7,6 +7,9 @@ contract FundMe {
 
 	uint256 public minimumUsd = 50 * 1e18;
 
+	address[] public funders;
+	mapping(address => uint256) public addressToAmountFunded;
+
 	function fund() public payable {
 		// Want to be able to set a minimum fund amount in USD
 		// 1. How do we send ETH to this contract?
@@ -20,6 +23,8 @@ contract FundMe {
         (, int256 price,,,) = priceFeed.latestRoundData();
         // ETH in terms of USD
         require(getConversionRate(msg.value) >= minimumUsd, "Didn't send enougth!"); // ETH price has 8 decimals and msg.value has 18.
+        funders.push(msg.sender);
+        addressToAmountFunded[msg.sender] = msg.value;
     }
 
     function getVersion() public view returns (uint256) {
