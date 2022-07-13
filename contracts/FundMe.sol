@@ -14,6 +14,8 @@ contract FundMe {
 		// Want to be able to set a minimum fund amount in USD
 		// 1. How do we send ETH to this contract?
 		require(getConversionRate(msg.value) >= minimumUsd, "Didn't send enougth!"); // 1e18 == 1 * 10 ** 18 == 1.000.000.000.000.000.000
+		funders.push(msg.sender);
+        addressToAmountFunded[msg.sender] = msg.value;
 	}
 
 	function getPrice() public view returns(uint256) {
@@ -23,8 +25,6 @@ contract FundMe {
         (, int256 price,,,) = priceFeed.latestRoundData();
         // ETH in terms of USD
         require(getConversionRate(msg.value) >= minimumUsd, "Didn't send enougth!"); // ETH price has 8 decimals and msg.value has 18.
-        funders.push(msg.sender);
-        addressToAmountFunded[msg.sender] = msg.value;
     }
 
     function getVersion() public view returns (uint256) {
