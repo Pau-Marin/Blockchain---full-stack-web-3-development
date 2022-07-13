@@ -10,6 +10,12 @@ contract FundMe {
 	address[] public funders;
 	mapping(address => uint256) public addressToAmountFunded;
 
+	address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
 	function fund() public payable {
 		// Want to be able to set a minimum fund amount in USD
 		// 1. How do we send ETH to this contract?
