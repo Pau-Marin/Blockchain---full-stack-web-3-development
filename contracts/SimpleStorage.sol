@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 
 /*
- *  ^ indicates this versión and above. Ex: ^0.8.8 = from 0.8.8 to 0.8.99999999...
+ *  ^ indicates this versión and above. Ex: ^0.8.0 = from 0.8.0 to 0.8.99999999...
  *  >= < indicates a range of versions. Ex: >= 0.8.8 <0.8.10  = from 0.8.8 to less than (not included) 0.8.10
  */ 
 pragma solidity ^0.8.8;
@@ -22,7 +22,7 @@ contract SimpleStorage {
     // [x]: array can only be x size.
     Person[] public people;
 
-    function store(uint256 _favoriteNumber) public {
+    function store(uint256 _favoriteNumber) public virtual {
         favoriteNumber = _favoriteNumber;
     }
 
