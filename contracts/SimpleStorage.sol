@@ -8,5 +8,14 @@ pragma solidity ^0.8.8;
 
 contract SimpleStorage {
     // Variables are initialized to their null value by default (0 in ints)
-    uint256 favoriteNumber;
+    uint256 public favoriteNumber;
+
+    function store(uint256 _favoriteNumber) public {
+        favoriteNumber = _favoriteNumber;
+    }
+
+    // view & pure methods don't spend gas to run.
+    function retrieve() public view returns(uint256) {
+        return favoriteNumber;
+    }
 }
