@@ -10,6 +10,9 @@ contract SimpleStorage {
     // Variables are initialized to their null value by default (0 in ints)
     uint256 favoriteNumber;
 
+    // Binds a variable tipe to another one (string to uint256 in that example).
+    mapping(string => uint256) public nameToFavoriteNumber;
+
     struct Person {
         uint256 favoriteNumber;
         string name;
@@ -33,5 +36,6 @@ contract SimpleStorage {
     // storage: variable exists outside of the transaction, can be modified.
     function addPerson(string memory _name, uint256 _favoriteNumber) public {
         people.push(Person(_favoriteNumber, _name));
+        nameToFavoriteNumber[_name] = _favoriteNumber;
     }
 }
