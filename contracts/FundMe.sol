@@ -16,6 +16,10 @@ contract FundMe {
 	function getPrice() public view returns(uint256) {
         // ABI
         // Address 0x8A753747A1Fa494EC906cE90E9f37563A8AF630e
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
+        (, int256 price,,,) = priceFeed.latestRoundData();
+        // ETH in terms of USD
+        require(getConversionRate(msg.value) >= minimumUsd, "Didn't send enougth!"); // ETH price has 8 decimals and msg.value has 18.
     }
 
     function getVersion() public view returns (uint256) {
@@ -23,7 +27,11 @@ contract FundMe {
     	return priceFeed.version();
     }
 
-    function getConversionRate() public {}
+    function getConversionRate(uint256 ethAmount) public view returns(uint256) {
+        uint256 ethPrice = getPrice();
+        uint256 ethAmountInUsd = (ethPrice * ethAmount) / 1e18;
+        return ethAmountInUsd;
+    }
 
 	// function withdraw() {}
 
