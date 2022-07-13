@@ -7,5 +7,6 @@
 pragma solidity ^0.8.8;
 
 contract SimpleStorage {
-    
+    // Variables are initialized to their null value by default (0 in ints)
+    uint256 favoriteNumber;
 }
