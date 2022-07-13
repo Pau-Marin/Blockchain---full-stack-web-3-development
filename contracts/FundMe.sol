@@ -26,6 +26,21 @@ contract FundMe {
         // Reset the array
         // (x) indicates x new elements
         funders = new address[](0);
+
+        // Actually withdraw the funds
+        /*
+         *         msg.sender  is an adress 
+         * payable(msg.sender) is a payable address
+         */
+
+        // Transfer: max 2300 gas, throws error.
+        // payable(msg.sender).transfer(address(this).balance);
+        // Send: max 2300 gas, returns bool indicating if succesful or not.
+        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        // require(sendSuccess, "Send failed");
+        // Call: forward all gas or set gas, return bool indicating if succesful or not.
+        (bool callSuccess, ) = payable(msg.sender).call{value: address(this).balance}("");
+        require(callSuccess, "Call failed");
     }
 
 }
