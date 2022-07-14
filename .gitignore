@@ -9,3 +9,8 @@
 # Modules
 ##########
 /node_modules
+
+###############
+# Secret Stuff
+###############
+*.env
