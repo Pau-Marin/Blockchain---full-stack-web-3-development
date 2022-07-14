@@ -13,4 +13,5 @@
 ###############
 # Secret Stuff
 ###############
-*.env
+.env
+.encryptedKey.json
