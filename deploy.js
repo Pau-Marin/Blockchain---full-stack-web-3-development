@@ -1,7 +1,8 @@
-function main() {
-  console.log("hi");
-  let variable = 5;
-  console.log(variable);
-}
+async function main() {}
 
-main();
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
