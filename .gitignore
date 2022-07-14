@@ -1,0 +1,17 @@
+###########
+# Solidity
+###########
+*.abi
+*.bin
+
+
+##########
+# Modules
+##########
+/node_modules
+
+###############
+# Secret Stuff
+###############
+.env
+.encryptedKey.json
