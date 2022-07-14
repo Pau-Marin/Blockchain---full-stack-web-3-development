@@ -16,6 +16,7 @@ async function main() {
     const contract = await contractFactory.deploy() // STOP here! Wait for contract to deploy
     await contract.deployTransaction.wait(1) // Wait 1 block to check if it was attached to the chain
 
+    console.log(`Contract Address: ${contract.address}`)
     // Get number
     const currentFavoriteNumber = await contract.retrieve()
     console.log(`Current Favorite Number: ${currentFavoriteNumber.toString()}`) // `${}` Allows string interpolation
