@@ -1,11 +1,12 @@
 const { deployments, ethers, getNamedAccounts } = require("hardhat")
 const { assert, expect } = require("chai")
 
+let deployer
+let fundMe
+const sendValue = ethers.utils.parseEther("1")
+
 describe("FundMe", function() {
-    let deployer
-    let fundMe
     let mockV3Aggregator
-    const sendValue = ethers.utils.parseEther("1")
     beforeEach(async function() {
         deployer = (await getNamedAccounts()).deployer
         await deployments.fixture(["all"])
@@ -23,7 +24,16 @@ describe("FundMe", function() {
         })
     })
 
+    describe("Receive", function() {
+        fundTest()
+    })
+
+    describe("Fallback", function() {
+        fundTest()
+    })
+
     describe("Fund", async function() {
+        fundTest()
         it("Fails if you don't send enough ETH", async function() {
             await expect(fundMe.fund()).to.be.revertedWith(
                 "Didn't send enough ETH!"
@@ -74,3 +84,20 @@ describe("FundMe", function() {
     })
 })
 
+async function fundTest() {
+    it("Fails if you don't send enough ETH", async function() {
+        await expect(fundMe.fund()).to.be.revertedWith(
+            "Didn't send enough ETH!"
+        )
+    })
+    it("Updated the amount funded data structure", async function() {
+        await fundMe.fund({ value: sendValue })
+        const response = await fundMe.addressToAmountFunded(deployer)
+        assert.equal(response.toString(), sendValue.toString())
+    })
+    it("Adds funder to array of funders", async function() {
+        await fundMe.fund({ value: sendValue })
+        const funder = await fundMe.funders(0)
+        assert.equal(funder, deployer)
+    })
+}
