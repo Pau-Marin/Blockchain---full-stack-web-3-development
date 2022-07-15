@@ -21,4 +21,6 @@
 ##########
 artifacts
 cache
+coverage
 gas-report.txt
+coverage.json
