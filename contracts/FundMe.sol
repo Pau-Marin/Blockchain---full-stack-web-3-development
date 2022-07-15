@@ -67,7 +67,7 @@ contract FundMe {
     function fund() public payable {
         require(
             msg.value.getConversionRate(priceFeed) >= MINIMUM_USD,
-            "Didn't send enougth!"
+            "Didn't send enough ETH!"
         ); // 1e18 == 1 * 10 ** 18 == 1.000.000.000.000.000.000
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
