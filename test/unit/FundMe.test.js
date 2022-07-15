@@ -67,6 +67,8 @@ describe("FundMe", function() {
             // Act
             const transactionResponse = await fundMe.withdraw()
             const transactionReceip = await transactionResponse.wait(1)
+            const { gasUsed, effectiveGasPrice } = transactionReceip
+            const gasCost = gasUsed.mul(effectiveGasPrice)
 
             const endingFundMeBalance = await fundMe.provider.getBalance(
                 fundMe.address
@@ -78,7 +80,7 @@ describe("FundMe", function() {
             assert.equal(endingFundMeBalance, 0)
             assert.equal(
                 startingFundMeBalance.add(startingDeployerBalance).toString(),
-                endingDeployerBalance.toString()
+                endingDeployerBalance.add(gasCost).toString()
             )
         })
     })
