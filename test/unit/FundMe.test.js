@@ -78,7 +78,7 @@ describe("FundMe", function() {
             assert.equal(endingFundMeBalance, 0)
             assert.equal(
                 startingFundMeBalance.add(startingDeployerBalance).toString(),
-                endingDeployerBalance.add(gasCost).toString()
+                endingDeployerBalance.toString()
             )
         })
     })
