@@ -8,7 +8,7 @@
 ##########
 # Modules
 ##########
-/node_modules
+node_modules
 */node_modules
 
 ###############
@@ -25,3 +25,4 @@ cache
 coverage
 gas-report.txt
 coverage.json
+deployments
