@@ -33,4 +33,13 @@ module.exports = {
     etherscan: {
         apiKey: ETHERSCAN_API_KEY,
     },
+    namedAccounts: {
+        deployer: {
+            default: 0,
+            4: 1,
+        },
+        users: {
+            default: 1,
+        },
+    },
 }
