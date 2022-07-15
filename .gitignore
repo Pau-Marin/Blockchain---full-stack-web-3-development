@@ -8,10 +8,19 @@
 ##########
 # Modules
 ##########
-/node_modules
+*/node_modules
 
 ###############
 # Secret Stuff
 ###############
 .env
 .encryptedKey.json
+
+##########
+# Hardhat
+##########
+artifacts
+cache
+coverage
+gas-report.txt
+coverage.json
