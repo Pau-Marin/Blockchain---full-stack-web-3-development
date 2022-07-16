@@ -3,8 +3,10 @@ import { abi, contractAddress } from "./constants.js"
 
 const connectButton = document.getElementById("connectButton")
 const fundButton = document.getElementById("fundButton")
+const balanceButton = document.getElementById("balanceButton")
 connectButton.onClick = connect
 fundButton.onClick = fund
+balanceButton.onClick = getBalance
 
 async function connect() {
     if (typeof window.ethereum !== "undefined") {
@@ -16,6 +18,14 @@ async function connect() {
         connectButton.innerHTML = "Connected!"
     } else {
         connectButton.innerHTML = "Please install Metamask!"
+    }
+}
+
+async function getBalance() {
+    if (typeof window.ethereum !== "undefined") {
+        const provider = new ethers.provider.Web3Provider(window.ethereum)
+        const balance = await provider.getBalance(contractAddress)
+        console.log(ethers.utils.formatEther(balance))
     }
 }
 
