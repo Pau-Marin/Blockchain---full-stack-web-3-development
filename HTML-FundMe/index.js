@@ -1,7 +1,3 @@
-// In Nodejs require()
-
-// In front-end Javascript you can't use require
-// import
 import { ethers } from "./ethers-5.6.esm.min.js"
 import { abi, contractAddress } from "./constants.js"
 
@@ -34,8 +30,23 @@ async function fund() {
             const transactionResponse = await contract.fund({
                 value: ethers.utils.parseEther(ethAmount),
             })
+            await listenForTransactionMine(transactionResponse, provider)
+            console.log("Done!")
         } catch (error) {
             console.log(error)
         }
     }
+}
+
+function listenForTransactionMine(transactionResponse, provider) {
+    console.log(`Mining ${transactionResponse.hash}...`)
+    // Listen for this transaction to finish
+    return new Promise((resolve, reject) => {
+        provider.once(transactionResponse.hash, (transactionReceipt) => {
+            console.log(
+                `Completed with ${transactionReceipt.confirmations} confirmations`
+            )
+            resolve()
+        })
+    })
 }
