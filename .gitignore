@@ -22,5 +22,6 @@
 artifacts
 cache
 coverage
+deployments
 gas-report.txt
 coverage.json
