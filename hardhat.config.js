@@ -15,7 +15,7 @@ const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 module.exports = {
     // solidity: "0.8.8",
     solidity: {
-        compilers: [{ version: "0.8.8" }, { version: "0.6.6" }],
+        compilers: [{ version: "0.8.8" }, { version: "0.6.6" }]
     },
     defaultNetwork: "hardhat",
     networks: {
@@ -23,25 +23,25 @@ module.exports = {
             url: RINKEBY_RPC_URL,
             accounts: [RINKEBY_PRIVATE_KEY],
             chainId: 4,
-            blockConfirmations: 6,
-        },
+            blockConfirmations: 6
+        }
     },
     gasReporter: {
-        enabled: false,
+        enabled: true,
         outputFile: "gas-report.txt",
         noColors: true,
         currency: "USD",
-        coinmarketcap: COINMARKETCAP_API_KEY,
+        coinmarketcap: COINMARKETCAP_API_KEY
     },
     etherscan: {
-        apiKey: ETHERSCAN_API_KEY,
+        apiKey: ETHERSCAN_API_KEY
     },
     namedAccounts: {
         deployer: {
-            default: 0,
+            default: 0
         },
         users: {
-            default: 1,
-        },
-    },
+            default: 1
+        }
+    }
 }
