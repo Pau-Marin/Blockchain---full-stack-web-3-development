@@ -6,7 +6,7 @@ pragma solidity ^0.8.8;
 import "./PriceConverter.sol";
 
 // Error Codes
-error FundME__NotOwner();
+error FundMe__NotOwner();
 
 // Interfaces, Libraries, Contracts
 
@@ -33,7 +33,7 @@ contract FundMe {
     modifier onlyOwner() {
         //require(msg.sender == i_owner, "Sender is not owner!");
         if (msg.sender != i_owner) {
-            revert FundME__NotOwner();
+            revert FundMe__NotOwner();
         }
         _;
     }
