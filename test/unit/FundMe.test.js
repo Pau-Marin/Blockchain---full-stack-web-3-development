@@ -1,16 +1,17 @@
 const { deployments, ethers, getNamedAccounts } = require("hardhat")
 const { assert, expect } = require("chai")
 
-let deployer
-let fundMe
-const sendValue = ethers.utils.parseEther("1")
-
 describe("FundMe", function() {
+    let deployer
+    let fundMe
+    let signer
     let mockV3Aggregator
+    const sendValue = ethers.utils.parseEther("1")
     beforeEach(async function() {
         deployer = (await getNamedAccounts()).deployer
         await deployments.fixture(["all"])
         fundMe = await ethers.getContract("FundMe", deployer)
+        signer = fundMe.provider.getSigner()
         mockV3Aggregator = await ethers.getContract(
             "MockV3Aggregator",
             deployer
@@ -25,15 +26,31 @@ describe("FundMe", function() {
     })
 
     describe("Receive", function() {
-        fundTest()
+        it("Receive receives money", async function() {
+            const response = await signer.sendTransaction({
+                to: fundMe.address,
+                value: sendValue
+            })
+            const fundMeBalance = await fundMe.provider.getBalance(
+                fundMe.address
+            )
+            assert.equal(fundMeBalance.toString(), sendValue)
+        })
     })
 
     describe("Fallback", function() {
-        fundTest()
+        it("Fallback receives money", async function() {
+            const fundMeBalance = await fundMe.provider.getBalance(
+                fundMe.address
+            )
+            assert(
+                fundMe.fallback({ value: sendValue }).toString(),
+                fundMeBalance.toString()
+            )
+        })
     })
 
     describe("Fund", async function() {
-        fundTest()
         it("Fails if you don't send enough ETH", async function() {
             await expect(fundMe.fund()).to.be.revertedWith(
                 "Didn't send enough ETH!"
@@ -83,7 +100,7 @@ describe("FundMe", function() {
                 endingDeployerBalance.add(gasCost).toString()
             )
         })
-        it("Allows us to withdrow with multiple funders", async function() {
+        it("Allows us to withdraw with multiple funders", async function() {
             // Arrange
             const accounts = await ethers.getSigners()
             for (let i = 1; i < 6; i++) {
@@ -216,21 +233,3 @@ describe("FundMe", function() {
         })
     })
 })
-
-async function fundTest() {
-    it("Fails if you don't send enough ETH", async function() {
-        await expect(fundMe.fund()).to.be.revertedWith(
-            "Didn't send enough ETH!"
-        )
-    })
-    it("Updated the amount funded data structure", async function() {
-        await fundMe.fund({ value: sendValue })
-        const response = await fundMe.s_addressToAmountFunded(deployer)
-        assert.equal(response.toString(), sendValue.toString())
-    })
-    it("Adds funder to array of funders", async function() {
-        await fundMe.fund({ value: sendValue })
-        const funder = await fundMe.s_funders(0)
-        assert.equal(funder, deployer)
-    })
-}
