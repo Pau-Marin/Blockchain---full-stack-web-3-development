@@ -1,21 +1,15 @@
-// Raffle
-
-// Enter the lottery (paying some amount)
-// Pick a random winner (verifiably random)
-// Winner to be selected every X minutes -> completly automate
-// Chainlink Oracle -> Randomness, Automated Execution (Chainlin Keepers)
-
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransderFailer();
 
-contract Raffle is VRFConsumerBaseV2 {
+contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     /* State Variables */
     uint256 private immutable i_entranceFee;
     address payable[] private s_players;
@@ -55,6 +49,19 @@ contract Raffle is VRFConsumerBaseV2 {
         s_players.push(payable(msg.sender));
         emit RaffleEnter(msg.sender);
     }
+
+    /**
+     * @dev This is the function that the Chainlink Keeper nodes call
+     * they look for the `upkeepNeeded` to return true.
+     * The following should be true in order to return true:
+     * 1. Out time interval should have passed
+     * 2. The lottery should have at least 1 player, and have some ETH
+     * 3. Our subscription is funded with LINK
+     * 4. The lottery should be in an "open" state.
+     */
+    function checkUpkeep(
+        bytes calldata /* checkData */
+    ) external override returns () {}
 
     function requestRandomWinner() external {
         // Request the random number
