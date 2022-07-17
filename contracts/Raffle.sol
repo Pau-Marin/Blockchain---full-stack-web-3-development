@@ -8,8 +8,15 @@ import "@chainlink/contracts/src/v0.8/interfaces/KeeperCompatibleInterface.sol";
 
 error Raffle__NotEnoughETHEntered();
 error Raffle__TransderFailer();
+error Raffle__NotOpen();
 
 contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
+    /* Type declarations */
+    enum RaffleState {
+        OPEN,
+        CALCULATING
+    }
+
     /* State Variables */
     uint256 private immutable i_entranceFee;
     address payable[] private s_players;
@@ -22,6 +29,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     // Loterry variables
     address private s_recentWinner;
+    RaffleState private s_raffleState;
 
     /* Events */
     event RaffleEnter(address indexed player);
@@ -40,12 +48,17 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         i_gasLane = gasLane;
         i_subscriptionId = subscriptionId;
         i_callbackGasLimit = callbackGasLimit;
+        s_raffleState = RaffleState.OPEN;
     }
 
     function enterRaffle() public payable {
         if (msg.value < i_entranceFee) {
             revert Raffle__NotEnoughETHEntered();
         }
+        if (s_raffleState != RaffleState.OPEN) {
+            revert Raffle__NotOpen();
+        }
+
         s_players.push(payable(msg.sender));
         emit RaffleEnter(msg.sender);
     }
@@ -67,6 +80,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         // Request the random number
         // Once we get it, do something with it
         // 2 transaction process
+        s_raffleState = RaffleState.CALCULATING;
         uint256 requestId = i_vrfCoordinator.requestRandomWords(
             i_gasLane,
             i_subscriptionId,
@@ -84,6 +98,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
         uint256 indexOfWinner = randomWords[0] % s_players.length;
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
+        s_raffleState = RaffleState.OPEN;
         (bool success, ) = recentWinner.call{ value: address(this).balance }(
             ""
         );
