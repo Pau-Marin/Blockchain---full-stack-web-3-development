@@ -14,6 +14,7 @@ const REPORT_GAS = process.env.REPORT_GAS
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
+    solidity: "0.8.7",
     defaultNetwork: "hardhat",
     networks: {
         hardhat: {
@@ -34,7 +35,9 @@ module.exports = {
         noColors: true,
         // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
     },
-    solidity: "0.8.7",
+    etherscan: {
+        apiKey: ETHERSCAN_API_KEY,
+    },
     namedAccounts: {
         deployer: {
             default: 0,
