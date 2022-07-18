@@ -42,5 +42,8 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                       "RaffleEnter"
                   )
               })
+              it("Doesn't allow entrance when raffle is calculating", async function () {
+                  await raffle.enterRaffle({ value: raffleEntranceFee })
+              })
           })
       })
