@@ -10,6 +10,7 @@ const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL
 const RINKEBY_PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
+const REPORT_GAS = process.env.REPORT_GAS
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -25,6 +26,13 @@ module.exports = {
             url: RINKEBY_RPC_URL,
             accounts: [RINKEBY_PRIVATE_KEY],
         },
+    },
+    gasReporter: {
+        enabled: REPORT_GAS,
+        currency: "USD",
+        outputFile: "gas-report.txt",
+        noColors: true,
+        // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
     },
     solidity: "0.8.7",
     namedAccounts: {
