@@ -16,6 +16,7 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
               raffleEntranceFee = await raffle.getEntranceFee()
               interval = await raffle.getInterval()
           })
+
           describe("constructor", async function () {
               it("Initializes the raffle correctly", async function () {
                   // Ideally we make our tests have 1 assert per "it"
@@ -50,6 +51,13 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   await expect(raffle.enterRaffle({ value: raffleEntranceFee })).to.be.revertedWith(
                       "Raffle__NotOpen"
                   )
+              })
+          })
+
+          describe("checkUpkeep", async function () {
+              it("Returns false if poeple haven't send any ETH", async function () {
+                  await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
+                  await network.provider.send("evm_mine", [])
               })
           })
       })
