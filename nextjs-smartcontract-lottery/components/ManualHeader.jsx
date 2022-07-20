@@ -1,7 +1,14 @@
 import { useMoralis } from "react-moralis"
+import { useEffect } from "react"
 
 export default function ManualHeader() {
-    const { enableWeb3, account } = useMoralis()
+    const { enableWeb3, account, isWeb3Enabled } = useMoralis()
+
+    useEffect(() => {
+        console.log("HI!")
+        console.log(isWeb3Enabled)
+    }, [isWeb3Enabled])
+
     return (
         <div>
             {account ? (
