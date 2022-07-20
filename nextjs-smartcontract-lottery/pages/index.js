@@ -1,6 +1,6 @@
 import Head from "next/head"
 import styles from "../styles/Home.module.css"
-import ManualHeader from "../components/ManualHeader"
+import Hedaer from "../components/Header"
 
 export default function Home() {
     return (
@@ -10,7 +10,7 @@ export default function Home() {
                 <meta name="description" content="Out smart contract lottery" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <ManualHeader />
+            <Header />
             Hello!
         </div>
     )
